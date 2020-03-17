@@ -108,6 +108,10 @@ def create_response_field(
     """
     class_validators = class_validators or {}
     field_info = field_info or FieldInfo(None)
+    
+    inherit_model_config = model_config
+    if type_.Config is not None and type_.Config.arbitrary_types_allowed:
+        inherit_model_config.arbitrary_types_allowed = True
 
     response_field = functools.partial(
         ModelField,
@@ -116,7 +120,7 @@ def create_response_field(
         class_validators=class_validators,
         default=default,
         required=required,
-        model_config=model_config,
+        model_config=inherit_model_config,
         alias=alias,
     )
 
